@@ -639,7 +639,7 @@ const App = () => {
     setLoadingFavs(true);
     let cancelled = false;
     try {
-      const r = await fetch("http://localhost:4000/api/user/favorites", {
+      const r = await fetch("/api/user/favorites", {
         credentials: "include",
       });
       const j = await r.json();

@@ -96,7 +96,7 @@ export default function AccountModal({ open, onClose, user }) {
     setError("");
     setFavorites(null);
 
-    fetch("http://localhost:4000/api/user/favorites", {
+    fetch("/api/user/favorites", {
       credentials: "include",
     })
       .then((r) => {

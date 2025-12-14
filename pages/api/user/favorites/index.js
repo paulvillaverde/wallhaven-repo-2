@@ -5,6 +5,7 @@ export default async function handler(req, res) {
   const token = parseTokenFromReq(req);
   const payload = token ? verifyToken(token) : null;
   const userId = payload?.id;
+  console.log('[api/user/favorites] method=', req.method, 'userId=', userId, 'hasToken=', !!token);
 
   if (req.method === 'GET') {
     if (!userId) return res.status(200).json({ ok: true, favorites: [] });
