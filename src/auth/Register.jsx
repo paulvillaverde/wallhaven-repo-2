@@ -22,7 +22,17 @@ const Register = ({ onSignedIn, onClose, onSwitchToLogin }) => {
       const data = await res.json();
 
       if (!data.ok) throw new Error(data.error || "Registration failed");
-      onSignedIn?.(data.user);
+
+      // Fetch current user data after successful registration
+      const meRes = await fetch("http://localhost:4000/api/auth/me", {
+        credentials: "include",
+      });
+      const meData = await meRes.json();
+      if (meData.ok && meData.user) {
+        onSignedIn?.(meData.user);
+      } else {
+        throw new Error("Failed to fetch user data");
+      }
     } catch (err) {
       setError(err.message);
     } finally {
