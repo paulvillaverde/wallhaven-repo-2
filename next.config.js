@@ -3,12 +3,12 @@ const nextConfig = {
   reactStrictMode: true,
   async rewrites() {
     return [
-      // Proxy Wallhaven API calls made to the dev path to avoid CORS in dev.
-      // Client calls use the DEV_BASE `/wh/api/v1` and will be rewritten to
-      // the real Wallhaven API.
+      // Proxy all requests under /wh to the Wallhaven host, preserving path
+      // and query. This mirrors the Vite proxy config which forwarded
+      // /wh -> https://wallhaven.cc and rewrote paths.
       {
-        source: '/wh/api/v1/:path*',
-        destination: 'https://wallhaven.cc/api/v1/:path*',
+        source: '/wh/:path*',
+        destination: 'https://wallhaven.cc/:path*',
       },
     ];
   },
