@@ -93,6 +93,42 @@ function ImageModal({ image, onClose, onNext, onPrev, query }) {
     c.toUpperCase()
   );
 
+  const handleDownload = async () => {
+    try {
+      const downloadUrl = image.path || image.url;
+      const response = await fetch(downloadUrl);
+      const blob = await response.blob();
+      const blobUrl = URL.createObjectURL(blob);
+      
+      // Extract proper file extension
+      let ext = 'jpg';
+      if (image.file_type) {
+        // Handle MIME types like "image/jpeg" or plain extensions like "png"
+        ext = image.file_type.includes('/') 
+          ? image.file_type.split('/')[1].replace('jpeg', 'jpg')
+          : image.file_type;
+      } else if (downloadUrl) {
+        // Extract from URL
+        const urlExt = downloadUrl.split('.').pop()?.split('?')[0];
+        if (urlExt) ext = urlExt;
+      }
+      
+      const link = document.createElement('a');
+      link.href = blobUrl;
+      link.download = `wallhaven-${image.id || 'image'}.${ext}`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      // Clean up the blob URL
+      setTimeout(() => URL.revokeObjectURL(blobUrl), 100);
+    } catch (error) {
+      console.error('Download failed:', error);
+      // Fallback: open in new tab
+      window.open(image.path || image.url, '_blank');
+    }
+  };
+
   const onKey = React.useCallback(
     (e) => {
       if (e.key === "Escape") onClose?.();
@@ -202,15 +238,14 @@ function ImageModal({ image, onClose, onNext, onPrev, query }) {
 
           <div className="detail__section">
             <h3>Download Options</h3>
-            <a
+            <button
               className="btn btn--download"
-              href={image.path || image.url}
-              download
+              onClick={handleDownload}
             >
               <span className="btn__icon">⬇</span>
               Download {is4k ? "4K" : "Full"}
               <span className="btn__meta">{formatBytes(image.file_size)}</span>
-            </a>
+            </button>
           </div>
 
           {image.colors?.length ? (

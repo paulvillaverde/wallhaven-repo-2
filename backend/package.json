@@ -13,7 +13,8 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "express-session": "^1.17.3",
-    "sqlite3": "^5.1.6"
+    "sqlite3": "^5.1.6",
+    "wallhaven-repo": "file:.."
   },
   "devDependencies": {
     "nodemon": "^2.0.22"
