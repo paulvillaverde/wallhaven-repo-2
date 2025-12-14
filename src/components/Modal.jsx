@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
-import "../App.css";
 
 const Modal = ({ children, onClose, ariaLabel = "Dialog" }) => {
   const panelRef = useRef(null);
@@ -29,6 +28,9 @@ const Modal = ({ children, onClose, ariaLabel = "Dialog" }) => {
     );
     focusable?.focus();
   }, []);
+
+  // createPortal and document are only available in the browser; guard for SSR
+  if (typeof document === 'undefined') return null;
 
   return createPortal(
     <div 

@@ -481,7 +481,7 @@ const App = () => {
     try {
       if (!nextVal) {
         const res = await fetch(
-          `http://localhost:4000/api/user/favorites/${encodeURIComponent(id)}`,
+          `/api/user/favorites/${encodeURIComponent(id)}`,
           { method: "DELETE", credentials: "include" }
         );
         const data = await res.json();
@@ -490,7 +490,7 @@ const App = () => {
         // remove from favorites screen list
         setFavImages((cur) => cur.filter((x) => x.id !== id));
       } else {
-        const res = await fetch("http://localhost:4000/api/user/favorites", {
+        const res = await fetch("/api/user/favorites", {
           method: "POST",
           credentials: "include",
           headers: { "Content-Type": "application/json" },

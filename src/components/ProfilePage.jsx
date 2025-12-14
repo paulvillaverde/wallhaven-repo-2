@@ -28,7 +28,7 @@ const [items, setItems]   = useState([]);    // enriched favorites
       setError(""); 
       setItems([]); 
       try { 
-        const r = await fetch("http://localhost:4000/api/user/favorites", { 
+        const r = await fetch("/api/user/favorites", { 
           credentials: "include", 
         }); 
         if (!r.ok) throw new Error("Failed to load favorites"); 
@@ -87,8 +87,8 @@ const [items, setItems]   = useState([]);    // enriched favorites
     setItems([...items]); 
     try { 
       if (!img.isFav) { 
-        const res = await 
-fetch(`http://localhost:4000/api/user/favorites/${encodeURIComponent(img.id)}`, { 
+  const res = await 
+fetch(`/api/user/favorites/${encodeURIComponent(img.id)}`, { 
           method: "DELETE", 
           credentials: "include", 
         }); 
@@ -97,7 +97,7 @@ fetch(`http://localhost:4000/api/user/favorites/${encodeURIComponent(img.id)}`, 
         // remove from list 
         setItems((arr) => arr.filter(x => x.id !== img.id)); 
       } else { 
-        const res = await fetch("http://localhost:4000/api/user/favorites", { 
+        const res = await fetch("/api/user/favorites", { 
           method: "POST", 
           credentials: "include", 
           headers: { "Content-Type": "application/json" }, 

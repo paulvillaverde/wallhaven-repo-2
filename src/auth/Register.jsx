@@ -13,7 +13,7 @@ const Register = ({ onSignedIn, onClose, onSwitchToLogin }) => {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:4000/api/auth/register", {
+      const res = await fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -24,7 +24,7 @@ const Register = ({ onSignedIn, onClose, onSwitchToLogin }) => {
       if (!data.ok) throw new Error(data.error || "Registration failed");
 
       // Fetch current user data after successful registration
-      const meRes = await fetch("http://localhost:4000/api/auth/me", {
+      const meRes = await fetch("/api/auth/me", {
         credentials: "include",
       });
       const meData = await meRes.json();

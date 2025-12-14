@@ -41,8 +41,9 @@ export default function AccountModal({ open, onClose, user }) {
     boxSizing: "border-box",
   };
 
-  // lock scroll & focus first control
+  // lock scroll & focus first control (guarded for SSR)
   useEffect(() => {
+    if (typeof document === 'undefined') return;
     if (!open) return;
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
@@ -77,6 +78,7 @@ export default function AccountModal({ open, onClose, user }) {
         }
       }
     }
+    if (typeof document === 'undefined') return;
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
   }, [open, onClose]);
@@ -313,5 +315,6 @@ export default function AccountModal({ open, onClose, user }) {
     </>
   );
 
+  if (typeof document === 'undefined') return null;
   return createPortal(modalContent, document.body);
 }

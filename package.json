@@ -2,28 +2,30 @@
   "name": "wallhaven-repo",
   "private": true,
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
-    "test": "vitest",
-    "client": "npm run dev",
-    "server": "npm run dev --prefix ./backend",
-    "dev:all": "concurrently -k -n client,server -c blue,green \"npm:client\" \"npm:server\""
+    "dev": "next dev -p 3000",
+    "build": "next build",
+    "start": "next start -p 3000",
+    "test": "vitest"
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.1.13",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "next": "^13.4.10",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.0",
+    "sqlite3": "^5.1.6",
+    "wallhaven-repo": "file:"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^14.0.0",
-    "@vitejs/plugin-react": "^4.0.0",
+    
     "autoprefixer": "^10.4.21",
-    "concurrently": "^8.2.2",
+    
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.13",
-    "vite": "^7.2.7",
+    
     "vitest": "^4.0.15"
   }
 }

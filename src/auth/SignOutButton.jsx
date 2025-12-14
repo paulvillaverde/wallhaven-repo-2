@@ -6,7 +6,7 @@ export default function SignOutButton({ onSignedOut }) {
   async function logout() {
     setLoading(true);
     try {
-      await fetch("http://localhost:4000/api/auth/logout", {
+      await fetch("/api/auth/logout", {
         method: "POST",
         credentials: "include"
       });

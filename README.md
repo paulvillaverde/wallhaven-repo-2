@@ -1,3 +1,37 @@
+# Wallhaven Next.js Migration
+
+This project is a migration of the original Wallhaven client/server into a single Next.js app.
+
+Quick start (development):
+
+1. Install dependencies
+
+```powershell
+npm install
+```
+
+2. Run the dev server
+
+```powershell
+npm run dev
+```
+
+The Next dev server will run at http://localhost:3000 and exposes API routes under `/api/*`.
+
+Important environment variables
+
+- `SESSION_SECRET` — the JWT signing secret used for auth cookies. Set to a strong random value in production.
+- `NODE_ENV` — when `production`, auth cookies are marked `Secure`.
+
+Running tests
+
+```powershell
+npm test
+```
+
+Notes
+- The old `backend/` folder was migrated into Next API routes. The SQLite database file `database.sqlite` is created in the repository root.
+- Review cookie security (set Secure + SameSite appropriately) when deploying to production over HTTPS.
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
