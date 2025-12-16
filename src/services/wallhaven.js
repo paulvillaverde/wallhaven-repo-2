@@ -21,7 +21,7 @@ export async function searchWallpapers({
   apikey,
   sorting = "toplist",
   order = "asc",
-  topRange = "3M",
+  topRange = "1M",
   purity = "100", // SFW only
   categories = "100", // General only
   ratios, atleast, colors,
@@ -31,24 +31,35 @@ export async function searchWallpapers({
   url.searchParams.set("page", String(page));
   url.searchParams.set("per_page", String(per_page));
   url.searchParams.set("sorting", sorting);
-  url.searchParams.set("order", order);
-  url.searchParams.set("topRange", topRange);
   url.searchParams.set("purity", String(purity));
   url.searchParams.set("categories", String(categories));
+  // Only include order and topRange if sorting by toplist
+  if (sorting === "toplist") {
+    url.searchParams.set("order", order);
+    url.searchParams.set("topRange", topRange);
+  }
   if (ratios)  url.searchParams.set("ratios", ratios);
   if (atleast) url.searchParams.set("atleast", atleast);
   if (colors)  url.searchParams.set("colors", colors);
 
   // ❌ DO NOT append ?apikey=... (401 if empty/invalid)
   // Client -> server proxy; server will attach the key. Send a plain request.
+  console.log("[wallhaven.js] Fetching URL:", url.toString());
   const res = await fetch(url.toString());
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  if (!res.ok) {
+    console.error(`[wallhaven.js] HTTP Error ${res.status}`);
+    throw new Error(`HTTP ${res.status}`);
+  }
 
   const text = await res.text();
   let data = JSON.parse(text);
   if (data && data.contents) data = JSON.parse(data.contents); // proxy wrapper tolerance
 
-  if (!data || !data.data) throw new Error("Unexpected API response.");
+  if (!data || !data.data) {
+    console.error("[wallhaven.js] Unexpected API response:", data);
+    throw new Error("Unexpected API response.");
+  }
+  console.log(`[wallhaven.js] Success: ${data.data.length} images found`);
   return data; // { data, meta }
 }
 
