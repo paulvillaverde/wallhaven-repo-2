@@ -909,22 +909,26 @@ const App = () => {
                 aria-haspopup="dialog"
                 title="Open profile"
               >
-                <span className="account-icon" aria-hidden="true">
-                  <svg
-                    viewBox="0 0 24 24"
-                    width="28"
-                    height="28"
-                    aria-hidden="true"
-                    focusable="false"
-                  >
-                    <circle cx="12" cy="12" r="10" fill="none" />
-                    <circle cx="12" cy="8" r="3" fill="currentColor" />
-                    <path
-                      d="M4 20c0-3.314 3.582-6 8-6s8 2.686 8 6"
-                      fill="currentColor"
-                    />
-                  </svg>
-                </span>
+                {avatarUrl ? (
+                  <img className="account-avatar-img" src={avatarUrl} alt="Avatar" />
+                ) : (
+                  <span className="account-icon" aria-hidden="true">
+                    <svg
+                      viewBox="0 0 24 24"
+                      width="28"
+                      height="28"
+                      aria-hidden="true"
+                      focusable="false"
+                    >
+                      <circle cx="12" cy="12" r="10" fill="none" />
+                      <circle cx="12" cy="8" r="3" fill="currentColor" />
+                      <path
+                        d="M4 20c0-3.314 3.582-6 8-6s8 2.686 8 6"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                )}
               </button>
               <SignOutButton onSignedOut={() => setUser(null)} />
             </>

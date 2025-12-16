@@ -20,6 +20,21 @@ const [tab, setTab] = useState("favorites"); // "favorites" | "about"
 const [loading, setLoading] = useState(true); 
 const [error, setError]   = useState(""); 
 const [items, setItems]   = useState([]);    // enriched favorites 
+const [avatarUrl, setAvatarUrl] = useState(null);
+
+// load avatar from localStorage
+useEffect(() => {
+  if (!user?.email) {
+    setAvatarUrl(null);
+    return;
+  }
+  try {
+    const saved = localStorage.getItem(`avatar:${user.email}`);
+    setAvatarUrl(saved || null);
+  } catch {
+    setAvatarUrl(null);
+  }
+}, [user]); 
 // fetch and enrich favorites with live Wallhaven stats 
   useEffect(() => { 
     let cancelled = false; 

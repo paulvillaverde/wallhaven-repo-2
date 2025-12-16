@@ -399,6 +399,15 @@
   filter: drop-shadow(0 2px 6px rgba(0,0,0,0.08));
 }
 
+/* avatar image in nav */
+.account-avatar-img {
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  object-fit: cover;
+  display: block;
+}
+
 /* sidebar overlay + panel */
 .account-overlay {
   position: fixed;
