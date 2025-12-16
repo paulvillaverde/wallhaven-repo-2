@@ -12,6 +12,8 @@ export default async function handler(req, res) {
     const originalUrl = req.url || '';
     const query = originalUrl.includes('?') ? originalUrl.slice(originalUrl.indexOf('?')) : '';
     const target = `https://wallhaven.cc/api/v1/${pathStr}${query}`;
+    
+    console.log('[Proxy] Target URL:', target);
 
     // Forward method, body and headers; attach server-side API key
     const headers = Object.assign({}, req.headers);

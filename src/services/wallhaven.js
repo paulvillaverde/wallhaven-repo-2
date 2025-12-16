@@ -40,7 +40,10 @@ export async function searchWallpapers({
   }
   if (ratios)  url.searchParams.set("ratios", ratios);
   if (atleast) url.searchParams.set("atleast", atleast);
-  if (colors)  url.searchParams.set("colors", colors);
+  if (colors)  {
+    url.searchParams.set("colors", colors);
+    console.log("[wallhaven.js] Filtering by color:", colors);
+  }
 
   // ❌ DO NOT append ?apikey=... (401 if empty/invalid)
   // Client -> server proxy; server will attach the key. Send a plain request.

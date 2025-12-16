@@ -21,8 +21,8 @@ const TOP_CATS = [
 ];
 
 const SORT = [
-  { label: "Most Popular", value: "toplist" },
   { label: "Latest", value: "date_added" },
+  { label: "Most Popular", value: "toplist" },
   { label: "Most Viewed", value: "views" },
   { label: "Most Favorited", value: "favorites" },
   { label: "Random", value: "random" },
@@ -31,14 +31,16 @@ const LAYOUT = ["All Orientations", "Landscape", "Portrait", "Square"];
 const QUALITY = ["All Resolutions", "4K & Above", "HD (1080p)", "Mobile Ready"];
 const COLORS = [
   { name: "All Colors", hex: null },
-  { name: "Red", hex: "ff0000" },
-  { name: "Blue", hex: "0000ff" },
-  { name: "Green", hex: "00ff00" },
-  { name: "Purple", hex: "800080" },
-  { name: "Orange", hex: "ffa500" },
-  { name: "Pink", hex: "ff69b4" },
+  { name: "Red", hex: "cc0000" },
+  { name: "Blue", hex: "0066cc" },
+  { name: "Green", hex: "669900" },
+  { name: "Purple", hex: "663399" },
+  { name: "Orange", hex: "ff6600" },
+  { name: "Pink", hex: "ea4c88" },
   { name: "Black", hex: "000000" },
-  { name: "White", hex: "ffffff" },
+  { name: "White", hex: "999999" },
+  { name: "Yellow", hex: "ffcc33" },
+  { name: "Brown", hex: "996633" },
 ];
 
 // Wallhaven base
@@ -290,7 +292,7 @@ const App = () => {
 
   // filters
   const [openDD, setOpenDD] = useState(false);
-  const [sortBy, setSortBy] = useState(SORT[0].value);
+  const [sortBy, setSortBy] = useState("date_added"); // Default to Latest
   const [layout, setLayout] = useState(LAYOUT[0]);
   const [quality, setQuality] = useState(QUALITY[0]);
   const [color, setColor] = useState(COLORS[0]);
@@ -330,13 +332,20 @@ const App = () => {
     else if (quality === "HD (1080p)") atleast = "1920x1080";
     else if (quality === "Mobile Ready") atleast = "1080x1920";
 
-    return {
+    const params = {
       sorting: sortBy,
       ratios,
       atleast,
-      colors: color.hex ?? undefined,
       purity: safeMode ? "100" : "110",
     };
+    
+    // Only add colors parameter if a color is selected
+    if (color.hex) {
+      params.colors = color.hex;
+    }
+    
+    console.log("[App] buildParams:", params);
+    return params;
   };
 
   async function fetchWallpapersFeed(searchQuery, currentPage) {
@@ -344,6 +353,7 @@ const App = () => {
     setError("");
     try {
       const params = buildParams();
+      console.log("[App] Fetching with params:", { q: searchQuery, page: currentPage, ...params });
       const data = await searchWallpapers({
         q: searchQuery,
         page: currentPage,
@@ -353,6 +363,12 @@ const App = () => {
       });
 
       const list = Array.isArray(data?.data) ? data.data : [];
+      console.log("[App] Received images:", list.length);
+      
+      if (list.length === 0) {
+        console.warn("[App] No images found with current filters. Try different filters.");
+      }
+      
       if (list.length) {
         const cache = metaCacheRef.current;
         for (const it of list) {
@@ -417,7 +433,7 @@ const App = () => {
   };
 
   const resetFilters = () => {
-    setSortBy(SORT[0].value);
+    setSortBy("date_added");
     setLayout(LAYOUT[0]);
     setQuality(QUALITY[0]);
     setColor(COLORS[0]);
@@ -1093,6 +1109,11 @@ const App = () => {
       {error && (
         <p className="meta-line" style={{ color: "red" }}>
           {error}
+        </p>
+      )}
+      {!loading && !error && images.length === 0 && (
+        <p className="meta-line" style={{ color: "var(--muted)", fontSize: "16px", padding: "40px 20px" }}>
+          No wallpapers found with the selected filters. Try different color or filters.
         </p>
       )}
 
