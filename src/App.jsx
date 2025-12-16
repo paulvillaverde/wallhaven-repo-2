@@ -761,9 +761,6 @@ const App = () => {
                 <strong>Name</strong>
                 <span>{user?.name || "—"}</span>
               </div>
-              <p className="about-note">
-                Your saved favorites appear below. Click a card to preview.
-              </p>
             </div>
           )}
 
